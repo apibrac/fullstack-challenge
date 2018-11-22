@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/16.4.1/umd/react.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.1/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.0/redux.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/5.0.7/react-redux.js"></script>
+
+  <script type="text/babel">
+    const OBJECTIVES = [
+      { "id": 1, "title": "First objective", "start": 0, "target": 50, "current": 20, "start_date": "2018-01-05", "end_date": "2018-03-05" },
+      { "id": 2, "title": "Second objective", "start": 10, "target": 42, "current": 20, "start_date": "2018-01-25", "end_date": "2018-03-30", "parent_id": 1 },
+      { "id": 3, "title": "Old objective", "start": 20, "target": 0, "current": 20, "start_date": "2018-02-05", "end_date": "2018-03-05", "parent_id": 4 },
+      { "id": 4, "title": "French objective", "start": 0, "target": 50, "current": 60, "start_date": "2018-01-05", "end_date": "2018-03-05", "parent_id": 2 },
+      { "id": 5, "title": "Void objective", "start": 10, "target": 42, "current": -20, "start_date": "2018-01-25", "end_date": "2018-03-30", "parent_id": 2 }
+    ];
+    const TODAY = "2018-02-20";
+
+
+    // PUT YOUR CODE HERE AND MODIFY App
+
+    const App = () =>
+      <div>CHALLENGE JAVELO</div>
+
+
+    ReactDOM.render(
+      <App/>,
+      document.getElementById('root')
+    );
+  </script>
+</body>
+</html>

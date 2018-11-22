@@ -1,0 +1,26 @@
+{
+  "objectives": [
+    { "id": 1, "start": 0, "target": 50, "start_date": "2018-01-05", "end_date": "2018-03-05", "parent_id": 4, "coef": 1 },
+    { "id": 2, "start": 10, "target": 42, "start_date": "2018-01-25", "end_date": "2018-03-30", "parent_id": 4, "coef": 1 },
+    { "id": 3, "start": 20, "target": 0, "start_date": "2018-02-05", "end_date": "2018-03-05", "parent_id": 5, "coef": 4 },
+    { "id": 4, "parent_id": 5, "coef": 1 },
+    { "id": 5, "parent_id": 6, "coef": 2 },
+    { "id": 6 }
+  ],
+  "progress_records": [
+    { "id": 1, "objective_id": 1, "value": 15, "date": "2018-01-12" },
+    { "id": 2, "objective_id": 3, "value": 10, "date": "2018-02-20" },
+    { "id": 3, "objective_id": 2, "value": 14, "date": "2018-02-18" },
+    { "id": 4, "objective_id": 4, "value": 14, "date": "2018-02-18" },
+    { "id": 5, "objective_id": 5, "value": 14, "date": "2018-02-18" },
+    { "id": 6, "objective_id": 6, "value": 14, "date": "2018-02-18" }
+  ],
+  "milestones": [
+    { "id": 1, "objective_id": 1, "target": 14, "date": "2018-01-10" },
+    { "id": 2, "objective_id": 2, "target": 13, "date": "2018-01-25" },
+    { "id": 3, "objective_id": 2, "target": 30, "date": "2018-02-15" },
+    { "id": 4, "objective_id": 2, "target": 40, "date": "2018-03-10" },
+    { "id": 5, "objective_id": 3, "target": 10, "date": "2018-02-15" },
+    { "id": 6, "objective_id": 3, "target": 2, "date": "2018-02-25" }
+  ]
+}

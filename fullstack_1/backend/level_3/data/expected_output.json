@@ -1,0 +1,16 @@
+{
+  "progress_records": [
+    {
+      "id": 1,
+      "excess": -2
+    },
+    {
+      "id": 2,
+      "excess": -29
+    },
+    {
+      "id": 3,
+      "excess": -81
+    }
+  ]
+}

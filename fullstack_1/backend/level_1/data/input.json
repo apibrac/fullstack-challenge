@@ -1,0 +1,12 @@
+{
+  "objectives": [
+    { "id": 1, "start": 0, "target": 50 },
+    { "id": 2, "start": 10, "target": 42 },
+    { "id": 3, "start": 20, "target": 0 }
+  ],
+  "progress_records": [
+    { "id": 1, "objective_id": 1, "value": 15 },
+    { "id": 2, "objective_id": 3, "value": 15 },
+    { "id": 3, "objective_id": 2, "value": 14 }
+  ]
+}
