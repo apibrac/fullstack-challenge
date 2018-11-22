@@ -11,28 +11,113 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.0/redux.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/5.0.7/react-redux.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
   <script type="text/babel">
-    const OBJECTIVES = [
-      { "id": 1, "title": "First objective", "start": 0, "target": 50, "current": 20, "start_date": "2018-01-05", "end_date": "2018-03-05" },
-      { "id": 2, "title": "Second objective", "start": 10, "target": 42, "current": 20, "start_date": "2018-01-25", "end_date": "2018-03-30", "parent_id": 1 },
-      { "id": 3, "title": "Old objective", "start": 20, "target": 0, "current": 20, "start_date": "2018-02-05", "end_date": "2018-03-05", "parent_id": 4 },
-      { "id": 4, "title": "French objective", "start": 0, "target": 50, "current": 60, "start_date": "2018-01-05", "end_date": "2018-03-05", "parent_id": 2 },
-      { "id": 5, "title": "Void objective", "start": 10, "target": 42, "current": -20, "start_date": "2018-01-25", "end_date": "2018-03-30", "parent_id": 2 }
-    ];
-    const TODAY = "2018-02-20";
+  const OBJECTIVES = [
+    {
+        id: 1,
+        title: 'First objective',
+        start: 0,
+        target: 50,
+        current: 20,
+        start_date: '2018-01-05',
+        end_date: '2018-03-05'
+    },
+    {
+        id: 2,
+        title: 'Second objective',
+        start: 10,
+        target: 42,
+        current: 20,
+        start_date: '2018-01-25',
+        end_date: '2018-03-30',
+        parent_id: 1
+    },
+    {
+        id: 3,
+        title: 'Old objective',
+        start: 20,
+        target: 0,
+        current: 20,
+        start_date: '2018-02-05',
+        end_date: '2018-03-05',
+        parent_id: 4
+    },
+    {
+        id: 4,
+        title: 'French objective',
+        start: 0,
+        target: 50,
+        current: 60,
+        start_date: '2018-01-05',
+        end_date: '2018-03-05',
+        parent_id: 2
+    },
+    {
+        id: 5,
+        title: 'Void objective',
+        start: 10,
+        target: 42,
+        current: -20,
+        start_date: '2018-01-25',
+        end_date: '2018-03-30',
+        parent_id: 2
+    }
+];
+const TODAY = '2018-02-20';
 
+// PUT YOUR CODE HERE AND MODIFY App
 
-    // PUT YOUR CODE HERE AND MODIFY App
+const ObjectivesList = () => (
+    <ul>
+        {OBJECTIVES.map(objective => <Objective text={objective.title} key={objective.id} chartID={objective.id} />)}
+    </ul>
+);
 
-    const App = () =>
-      <div>CHALLENGE JAVELO</div>
+const Objective = ({ text, chartID }) => (
+    <li>
+        <div>{text}</div>
+        <canvas id={chartID} width="5" height="1" />
+    </li>
+);
 
+const targetCounter = OBJECTIVES.filter(objective => objective.current > objective.target).length;
 
-    ReactDOM.render(
-      <App/>,
-      document.getElementById('root')
-    );
-  </script>
+class App extends React.Component {
+    componentDidMount() {
+        OBJECTIVES.forEach(objective => createGraph(objective));
+    }
+    render() {
+        return (
+            <div>
+                <div>CHALLENGE JAVELO</div>
+                <div>{targetCounter} objectives have their current value over their target</div>
+                <ObjectivesList />
+            </div>
+        );
+    }
+}
+
+const createGraph = objective => {
+    const chart = new Chart(document.getElementById(objective.id).getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: [objective.start_date, TODAY, objective.end_date],
+            datasets: [
+                {
+                    label: objective.title,
+                    fill: false,
+                    backgroundColor: '#00a6dd',
+                    borderColor: '#00a6dd',
+                    data: [objective.start, objective.current, objective.target]
+                }
+            ]
+        }
+    });
+};
+
+ReactDOM.render(<App />, document.getElementById('root'));
+</script>
 </body>
 </html>
