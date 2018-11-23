@@ -12,7 +12,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.0/redux.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/5.0.7/react-redux.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-
   <script type="text/babel">
   const OBJECTIVES = [
     {
@@ -68,21 +67,33 @@
 const TODAY = '2018-02-20';
 
 // PUT YOUR CODE HERE AND MODIFY App
+const targetCounter = OBJECTIVES.filter(objective => objective.current > objective.target).length;
 
-const ObjectivesList = () => (
-    <ul>
-        {OBJECTIVES.map(objective => <Objective text={objective.title} key={objective.id} chartID={objective.id} />)}
-    </ul>
-);
+const arrayToTree = array => {
+    array.forEach(parent => {
+        parent.nodes = array.filter(child => child.parent_id == parent.id);
+    });
+    return array.filter(obj => obj.parent_id == null)[0];
+};
 
-const Objective = ({ text, chartID }) => (
-    <li>
+const ObjectiveInfo = ({ text, chartID }) => (
+    <div>
         <div>{text}</div>
         <canvas id={chartID} width="5" height="1" />
-    </li>
+    </div>
 );
 
-const targetCounter = OBJECTIVES.filter(objective => objective.current > objective.target).length;
+class Objective extends React.Component {
+    render() {
+        const { obj } = this.props;
+        return (
+            <div style={styles}>
+                <ObjectiveInfo text={obj.title} chartID={obj.id} />
+                {obj.nodes.length > 0 ? obj.nodes.map(child => <Objective obj={child} key={child.id} />) : false}
+            </div>
+        );
+    }
+}
 
 class App extends React.Component {
     componentDidMount() {
@@ -93,7 +104,7 @@ class App extends React.Component {
             <div>
                 <div>CHALLENGE JAVELO</div>
                 <div>{targetCounter} objectives have their current value over their target</div>
-                <ObjectivesList />
+                <Objective obj={arrayToTree(OBJECTIVES)} />
             </div>
         );
     }
@@ -115,6 +126,11 @@ const createGraph = objective => {
             ]
         }
     });
+};
+
+const styles = {
+    paddingLeft: '100px',
+    paddingRight: '50px'
 };
 
 ReactDOM.render(<App />, document.getElementById('root'));
