@@ -84,10 +84,28 @@ const ObjectiveInfo = ({ text, chartID }) => (
 );
 
 class Objective extends React.Component {
+    state = { increment: 0, current: this.props.obj.current };
+
+    componentDidMount() {
+        createGraph(this.props.obj, this.state.current);
+    }
+
+    componentDidUpdate() {
+        createGraph(this.props.obj, this.state.current);
+    }
+
+    handleClick = () => {
+        this.setState(state => ({ increment: state.increment + 1, current: state.current + 1 }));
+        OBJECTIVES[this.props.obj.id - 1].current += 1;
+    };
     render() {
         const { obj } = this.props;
         return (
             <div style={styles}>
+                <button type="button" onClick={this.handleClick}>
+                    Increment value
+                </button>
+                <span>Clicked {this.state.increment} times</span>
                 <ObjectiveInfo text={obj.title} chartID={obj.id} />
                 {obj.nodes.length > 0 ? obj.nodes.map(child => <Objective obj={child} key={child.id} />) : false}
             </div>
@@ -110,7 +128,7 @@ class App extends React.Component {
     }
 }
 
-const createGraph = objective => {
+const createGraph = (objective, current) => {
     const chart = new Chart(document.getElementById(objective.id).getContext('2d'), {
         type: 'line',
         data: {
@@ -121,7 +139,7 @@ const createGraph = objective => {
                     fill: false,
                     backgroundColor: '#00a6dd',
                     borderColor: '#00a6dd',
-                    data: [objective.start, objective.current, objective.target]
+                    data: [objective.start, current, objective.target]
                 }
             ]
         }
