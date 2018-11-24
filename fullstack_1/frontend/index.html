@@ -67,6 +67,7 @@
 const TODAY = '2018-02-20';
 
 // PUT YOUR CODE HERE AND MODIFY App
+
 const targetCounter = OBJECTIVES.filter(objective => objective.current > objective.target).length;
 
 const arrayToTree = array => {
@@ -85,7 +86,6 @@ const ObjectiveInfo = ({ text, chartID }) => (
 
 class Objective extends React.Component {
     state = { increment: 0, current: this.props.obj.current };
-
     componentDidMount() {
         createGraph(this.props.obj);
     }
@@ -114,19 +114,82 @@ class Objective extends React.Component {
 }
 
 class App extends React.Component {
+    handleClick = () => {
+        this.props.increment();
+    };
+
     componentDidMount() {
-        OBJECTIVES.forEach(objective => createGraph(objective));
+        this.props.setObjectives(OBJECTIVES);
     }
+    componentDidUpdate() {
+        const { objectives } = this.props;
+        objectives.forEach(objective => createGraph(objective));
+    }
+
     render() {
+        const { objectives } = this.props;
         return (
             <div>
                 <div>CHALLENGE JAVELO</div>
+                <button type="button" onClick={this.handleClick}>
+                    Increment randome objective
+                </button>
                 <div>{targetCounter} objectives have their current value over their target</div>
-                <Objective obj={arrayToTree(OBJECTIVES)} />
+                {objectives.length > 0 && <Objective obj={arrayToTree(objectives)} />}
             </div>
         );
     }
 }
+
+/* REDUX */
+
+const initalState = {
+    objectives: {}
+};
+
+const reducer = (state = initalState, { type, ...action }) => {
+    switch (type) {
+        case 'SET_OBJECTIVES':
+            const { objectives } = action;
+            return { ...state, objectives };
+        case 'INCREMENT_RANDOM':
+            const test = Math.floor(Math.random() * state.objectives.length);
+            return {
+                objectives: state.objectives.map(obj => {
+                    if (obj.id === test + 1) {
+                        obj.current += 1;
+                    }
+                    return obj;
+                })
+            };
+        default:
+            return state;
+    }
+};
+
+const store = Redux.createStore(reducer);
+
+const setObjectives = objectives => ({
+    type: 'SET_OBJECTIVES',
+    objectives
+});
+
+const increment = () => ({
+    type: 'INCREMENT_RANDOM'
+});
+
+const mapStateToProps = state => ({
+    objectives: state.objectives
+});
+
+const mapDispatchToProps = dispatch => ({
+    setObjectives: objectives => dispatch(setObjectives(objectives)),
+    increment: index => dispatch(increment(index))
+});
+
+const AppContainer = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(App);
+
+/* REDUX */
 
 const createGraph = objective => {
     const chart = new Chart(document.getElementById(objective.id).getContext('2d'), {
@@ -151,7 +214,12 @@ const styles = {
     paddingRight: '50px'
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <ReactRedux.Provider store={store}>
+        <AppContainer />
+    </ReactRedux.Provider>,
+    document.getElementById('root')
+);
 </script>
 </body>
 </html>
